@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
+using IdentityServer4;
 
 namespace IdentityProvider
 {
@@ -17,7 +23,7 @@ namespace IdentityProvider
         {
             services.AddControllersWithViews();
 
-            const string connectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;database=Test.IdentityServer4.EntityFramework;trusted_connection=yes;";
+            const string connectionString = @"Data Source=LAPTOP-E1OBC1F6\SQLSERVER2017;database=Test.IdentityServer4.EntityFramework;trusted_connection=yes;";
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddDbContext<ApplicationDbContext>(builder =>
@@ -28,6 +34,18 @@ namespace IdentityProvider
 
             IIdentityServerBuilder ids = services.AddIdentityServer()
                 .AddDeveloperSigningCredential();
+
+            services.AddAuthentication()
+                                .AddGoogle("Google", options =>
+                                {
+                                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                                    options.ClientId = "303487280484-j03qok7ol9va6bveja6l7qt1i10t2lhc.apps.googleusercontent.com";
+                                    options.ClientSecret = "1Lpv5jrF9fMK00vQZGovlnzw";
+
+                                    //options.ClientId = "434483408261-55tc8n0cs4ff1fe21ea8df2o443v2iuc.apps.googleusercontent.com";
+                                    //options.ClientSecret = "3gcoTrEDPPJ0ukn_aYYT6PWo";
+                                });
 
             // in-memory client and scope stores
             /*ids.AddInMemoryClients(Clients.Get())

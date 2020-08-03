@@ -1,3 +1,4 @@
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,13 @@ namespace Client
                     options.DefaultChallengeScheme = "oidc";
                 })
                 .AddCookie("cookie")
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                    options.ClientId = "434483408261-55tc8n0cs4ff1fe21ea8df2o443v2iuc.apps.googleusercontent.com";
+                    options.ClientSecret = "3gcoTrEDPPJ0ukn_aYYT6PWo";
+                })
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.Authority = "https://localhost:5000";

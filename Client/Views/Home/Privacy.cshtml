@@ -4,3 +4,17 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
+
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <h1>Welcome, @User.Identity.Name</h1>
+
+    <p>
+        @foreach (var claim in Context.User.Claims)
+        {
+            <div><code>@claim.Type</code>: <strong>@claim.Value</strong></div>
+        }
+    </p>
+
+    <a class="btn btn-lg btn-danger" href="/signout?returnUrl=%2F">Sign out</a>
+}
